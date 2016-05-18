@@ -1,0 +1,41 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+根据aids获取单个剧集所有信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumFullInfos.action?aids=115971&w=tudou
+    should contain    ${c.content}    [{"name":"格斗","id":476},{"name":"冒险","id":485},{"name":"忍者","id":489}]
+
+根据aids获取多个剧集所有信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumFullInfos.action?aids=115971,245458&w=tudou
+    should contain    ${c.content}    [{"name":"剧情","id":426},{"name":"古装","id":427},{"name":"神话","id":431},{"name":"偶像","id":440}]
+
+根据icode获取剧集所有信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumFullInfos.action?icode=HL4FmhBp5MI&w=tudou
+    should contain    ${c.content}    {"name":"张翰","id":94225,"type":0,"picUrl":"http://r1.ykimg.com/0514000056EF827B67BC3C19F70E94F4","youkuId":37411}
+
+传入的aids和icode不匹配
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumFullInfos.action?aids=115971&icode=1000&w=tudou
+    should contain    ${c.content}    []
+
+icode和aid都没有传入
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumFullInfos.action?icode=&w=tudou
+    should contain    ${c.content}    aids、icode need one
+
+传入的icode不存在
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumFullInfos.action?icode=HL4Fmhp5MI&w=tudou
+    should contain    ${c.content}    NullPointerException

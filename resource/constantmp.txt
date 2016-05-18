@@ -1,0 +1,3 @@
+*** Variables ***
+${wwwtest}        http://wwwtest.tudou.com
+${www}            http://www.tudou.com

@@ -1,0 +1,29 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+获取视频商品列表
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    获取视频商品列表url    YzIWZhVYMaY
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    {"times":[{"startTime":5000,"endTime":35000}],"userId":21451570,"gid":31,"goodsTitle":"《Prismatic COLORS》"}
+
+icode错误
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    获取视频商品列表url    YzIWZhVYMaYsss
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    icode error YzIWZhVYMaYsss
+
+icode缺失
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    Set Variable    /mobileportal/getGoodsWidget.action
+    ${c}    get    sol    ${url}
+    Should Be Equal As Integers    ${c.status_code}    400

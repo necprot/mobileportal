@@ -1,0 +1,41 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+传入icode，返回正确值
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    返回getItemBaseInfo精简数据url    ssWm3JmlndA
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.text}    XNzkwNzA2NzMy
+
+传入iids,返回正确值
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    Set Variable    /mobileportal/getItemMiniInfos.action?iids=132809092
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    http://www.tudou.com/programs/view/yfsZtUr4f3w/
+
+传入icode错误
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    返回getItemBaseInfo精简数据url    yfsZtUr4f3www
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    []
+
+传入iids错误
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    Set Variable    /mobileportal/getItemMiniInfos.action?iids=13280909222
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    NumberFormatException
+
+icode和iid都没有传入
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    Set Variable    /mobileportal/getItemMiniInfos.action
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    iids、icodes need one

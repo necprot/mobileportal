@@ -1,0 +1,30 @@
+*** Settings ***
+Test Timeout      10 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+投票
+    [Timeout]
+    create session    sol    ${www}    timeout=${15.00}
+    ${s}    get    sol    /mobileportal/hdBatchStat.action?icode=FDZC0wD5FKc&widgetId=13&type=3&voteType=2&voteId=1&uid=45&num=1
+    log    ${s.content}
+    Should Contain    ${s.content}    success
+
+送礼
+    [Timeout]    30 seconds
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/hdBatchStat.action?icode=FDZC0wD5FKc&widgetId=13&voteId=1&uid=45&type=5&w=tudou_app
+    should contain    ${c.content}    交易流水号 不成功
+
+type参数为空
+    [Timeout]    30 seconds
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/hdBatchStat.action?icode=FDZC0wD5FKc&widgetId=13&voteId=1&uid=45&type=&w=tudou_app
+    Should Be Equal As Integers    ${c.status_code}    400

@@ -1,0 +1,26 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+单个视频code获取关联豆单
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getVideoPids.action?ics=hXPlAyEK7k0&w=tudou
+    should contain    ${c.content}    "icode":"hXPlAyEK7k0","pids":"21362965","pcodes":"1Kdq6EtZVJ8"
+
+多个视频code获取关联豆单
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getVideoPids.action?ics=hXPlAyEK7k0,iV12j1WyHAI&w=tudou
+    should contain    ${c.content}    {"icode":"iV12j1WyHAI","pids":"22794405","pcodes":"7aVkGxsZbQc"}
+
+未传入视频code
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getVideoPids.action
+    Should Be Equal As Integers    ${c.status_code}    400

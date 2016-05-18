@@ -1,0 +1,21 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+获取综艺电视剧频道排行榜
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/abothers.action?c=31,30
+    Should Contain    ${c.text}    电视剧
+
+未传入频道id
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/abothers.action
+    Should Be Equal As Integers    ${c.status_code}    400

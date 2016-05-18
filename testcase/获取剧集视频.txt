@@ -1,0 +1,23 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+获取剧集视频
+    Create Session    tiny    ${www}    timeout=${15.00}
+    ${url}    获取剧集视频url    248045
+    ${c}    get    tiny    ${url}
+    should contain    ${c.text}    初入蜀山多波折
+
+aid参数错误
+    create session    tiny    ${www}    timeout=${15.00}
+    ${url}    获取剧集视频url    24804555
+    ${c}    get    tiny    ${url}
+    should contain    ${c.text}    NullPointerException

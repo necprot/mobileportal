@@ -1,0 +1,26 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+通过视频id获取统计信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/itemSum.action?iabcdefg=170777167&uabcdefg=76226250&showArea=true&juabcdefg=784654&w=tudou
+    should contain    ${c.content}    0
+
+通过视频code获取统计信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/itemSum.action?icabcdefg=JciO3XU0qdg&uabcdefg=76226250&showArea=true&juabcdefg=784654&w=tudou
+    should contain    ${c.content}    0
+
+视频id和icode都未传入
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/itemSum.action
+    should contain    ${c.content}    iabcdefg || icabcdefg is empty

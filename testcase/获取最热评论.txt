@@ -1,0 +1,31 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+获取最热评论
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getHotComment.action?icode=ssWm3JmlndA&page=1&rows=5&tm=90
+    should contain    ${c.content}    我就搞明白了·大师兄和小师妹为什么不能在一起了
+
+每页获取10条数据
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getHotComment.action?icode=ssWm3JmlndA&page=1&rows=10&tm=90
+    should contain    ${c.content}    怎么忍心让晴雪一直找不到苏苏...
+
+icode参数缺失
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getHotComment.action?page=1&rows=10&tm=9000
+    should contain    ${c.content}    iids、icodes need one
+
+获取第二页评论
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getHotComment.action?icode=ssWm3JmlndA&page=2&rows=10&tm=90
+    should contain    ${c.content}    杨幂真恶心，真假

@@ -1,0 +1,31 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+根据剧集id获取剧集人物
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlumPerson.action?aids=115971&w=tudou
+    should contain    ${c.content}    {"type":0,"youkuId":217884,"name":"竹内顺子","id":127858}
+
+根据单个icode获取剧集人物
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlumPerson.action?icodes=HL4FmhBp5MI&w=tudou
+    should contain    ${c.content}    [{"type":0,"youkuId":37411,"name":"张翰","id":94225},{"type":0,"youkuId":742983,"name":"古力娜扎","id":170889},{"type":0,"youkuId":69203,"name":"关智斌","id":105194},{"type":0,"youkuId":379604,"name":"蓝盈莹","id":156582},{"type":0,"youkuId":335858,"name":"李超","id":144946},{"type":0,"youkuId":21552,"name":"吴磊","id":83287},{"type":0,"youkuId":858870,"name":"尹正&#160","id":715009},{"type":0,"youkuId":781852,"name":"唐菀","id":642474},{"type":0,"youkuId":826931,"name":"高伟光","id":682213},{"type":0,"youkuId":315083,"name":"万妮恩","id":139093},{"type":0,"youkuId":353370,"name":"李茂","id":147609},{"type":0,"youkuId":314106,"name":"高钧贤","id":138892},{"type":0,"youkuId":759915,"name":"田宇鹏","id":171331},{"type":0,"youkuId":752520,"name":"刘长德","id":171150},{"type":0,"youkuId":786541,"name":"鸿利","id":645331},{"type":0,"youkuId":868770,"name":"刘骐","id":724959},{"type":0,"youkuId":879853,"name":"朴铄","id":736048},{"type":0,"youkuId":727437,"name":"任学海","id":170616},{"type":0,"youkuId":300954,"name":"苏茂","id":137637},{"type":0,"youkuId":323516,"name":"郑恕峰","id":141887},{"type":0,"youkuId":882632,"name":"柴子娣","id":738835},{"type":0,"youkuId":389836,"name":"郭子千","id":158552},{"type":0,"youkuId":22466,"name":"张明明","id":83933},{"type":0,"youkuId":858002,"name":"熊梓菱","id":714140},{"type":0,"youkuId":882637,"name":"童晓梅","id":738840}]
+
+根据多个icode获取剧集人物
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlumPerson.action?icodes=HL4FmhBp5MI,pu_Z6TTp3u8&w=tudou
+    should contain    ${c.content}    [{"type":0,"youkuId":183129,"name":"刘诗诗","id":122940},{"type":0,"youkuId":16823,"name":"霍建华","id":80075},{"type":0,"youkuId":349345,"name":"黄轩","id":146840},{"type":0,"youkuId":353395,"name":"李呈媛","id":147616},{"type":0,"youkuId":22356,"name":"袁文康","id":83856},{"type":0,"youkuId":365776,"name":"金晨","id":330936},{"type":0,"youkuId":15958,"name":"何晴","id":79354},{"type":0,"youkuId":17149,"name":"何音","id":80317},{"type":0,"youkuId":21863,"name":"刘立伟","id":83512},{"type":0,"youkuId":418128,"name":"王春元","id":164383},{"type":0,"youkuId":374624,"name":"朱虹","id":155589},{"type":0,"youkuId":370812,"name":"于莎莎","id":154249},{"type":0,"youkuId":10511,"name":"王新民","id":74671},{"type":0,"youkuId":94472,"name":"王丽媛","id":109985},{"type":0,"youkuId":876326,"name":"张雷","id":732519},{"type":0,"youkuId":737155,"name":"张柏俊","id":601305},{"type":0,"youkuId":391509,"name":"邓立民","id":159186},{"type":0,"youkuId":353912,"name":"吕梁","id":325763},{"type":0,"youkuId":22092,"name":"方子春","id":83686},{"type":0,"youkuId":186141,"name":"顾艳","id":123308},{"type":0,"youkuId":865584,"name":"卢森堡","id":721769},{"type":0,"youkuId":843700,"name":"张皓然","id":699821},{"type":0,"youkuId":374422,"name":"谭歆柔","id":155493},{"type":0,"youkuId":335858,"name":"李超","id":144946},{"type":0,"youkuId":379901,"name":"左金珠","id":156644},{"type":0,"youkuId":839694,"name":"马湘宜","id":695795},{"type":0,"youkuId":876783,"name":"易凝","id":732976},{"type":0,"youkuId":852828,"name":"胡冰卿","id":708951},{"type":0,"youkuId":832662,"name":"冯丽丽","id":688701},{"type":0,"youkuId":861188,"name":"徐晓璐","id":717328},{"type":0,"youkuId":726702,"name":"公方敏","id":591791},{"type":0,"youkuId":863425,"name":"常晋","id":719603},{"type":0,"youkuId":881025,"name":"袁愿","id":737222},{"type":0,"youkuId":845080,"name":"李玮珽","id":701202},{"type":0,"youkuId":876782,"name":"彭豆豆","id":732975},{"type":0,"youkuId":871699,"name":"陈欣予","id":727890},{"type":0,"youkuId":386070,"name":"张逸杰","id":343746},{"type":0,"youkuId":812044,"name":"张籽沐","id":667136},{"type":0,"youkuId":17382,"name":"崔可法","id":80494},{"type":0,"youkuId":879398,"name":"屈刚","id":735593},{"type":0,"youkuId":809433,"name":"徐鹏凯","id":663883},{"type":0,"youkuId":717034,"name":"陆梅芳","id":169083},{"type":0,"youkuId":857225,"name":"曲哲明","id":713361},{"type":0,"youkuId":21445,"name":"韩振华","id":83213},{"type":0,"youkuId":881026,"name":"陆媛媛","id":737223}]
+
+icode和aid都未传入
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlumPerson.action
+    should contain    ${c.content}    aids、icodes need one

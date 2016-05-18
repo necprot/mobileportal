@@ -1,0 +1,36 @@
+*** Settings ***
+Test Timeout      1 minute
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+根据aid获取剧集周边视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumOtherItems.action?aid=245458&w=tudou
+    should contain    ${c.content}    XMTU2NzE0ODI0NA==
+
+根据icode获取剧集周边视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumOtherItems.action?icode=ssWm3JmlndA&w=tudou
+    should contain    ${c.content}    XNTkxODYyODQ4
+
+根据iid获取剧集周边视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumOtherItems.action?iid=132810834&w=tudou
+    should contain    ${c.content}    XMTU2Nzc2MjgzMg==
+
+根据acode获取剧集周边视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumOtherItems.action?acode=ZG5nM9M4ZmA&w=tudou
+    should contain    ${c.content}    XMTU2NzE0ODk0NA==
+
+没有传入任何code
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getAlbumOtherItems.action
+    should contain    ${c.content}    param is error albumId : 0 | itemId : 0

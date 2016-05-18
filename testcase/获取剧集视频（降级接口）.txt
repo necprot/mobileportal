@@ -1,0 +1,41 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+获取剧集视频1（降级接口）
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getLastAlbumItems.action?aid=238777&w=tudou_app
+    should contain    ${c.content}    杨坤赌博李岚分手
+
+获取剧集视频2（降级接口）
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getLastAlbumItems.action?aid=255549&w=tudou_app
+    should contain    ${c.content}    魔王少年恋上大龄女神
+
+返回最后两条数据
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getLastAlbumItems.action?aid=238395&w=tudou_app&n=2
+    should contain    ${c.content}    何以笙箫默-第36集
+
+返回最前两条数据
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getLastAlbumItems.action?aid=245458&w=tudou_app&n=2&isLast=false
+    should contain    ${c.content}    山海经之赤影传说 TV版-第1集
+
+视频aid不存在
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getLastAlbumItems.action?aid=245458555&w=tudou_app
+    should contain    ${c.content}    {"items":[],"extFlag":0,"isSerial":0}
+
+aid参数缺失
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getLastAlbumItems.action?aid=&w=tudou_app
+    Should Be Equal As Integers    ${c.status_code}    400

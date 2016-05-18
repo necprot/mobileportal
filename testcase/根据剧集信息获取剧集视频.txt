@@ -1,0 +1,31 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+正确的APP_KEY和剧集id
+    Create Session    sol    ${www}    timeout=${15.00}
+    ${url2}    根据剧集信息获取剧集视频URL    255549
+    ${o}    get    sol    ${url2}
+    Should Contain    ${o.text}    小丈夫-第1集
+
+错误的剧集id
+    Create Session    error    ${www}    timeout=${15.00}
+    ${url1}    根据剧集信息获取剧集视频URL    23823999
+    ${s}    get    error    ${url1}
+    log    ${s.text}
+    Should Contain    ${s.text}    code":1003
+
+剧集id为空
+    Create Session    none    ${www}    timeout=${15.00}
+    ${url1}    根据剧集信息获取剧集视频URL    ${empty}
+    ${s}    get    none    ${url1}
+    log    ${s.status_code}
+    Should Be Equal As Integers    ${s.status_code}    400

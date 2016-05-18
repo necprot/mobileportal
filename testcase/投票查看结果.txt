@@ -1,0 +1,29 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+投票查看结果
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    Set Variable    /mobileportal/getHdStatInfo.action?icode=FDZC0wD5FKc&widgetId=13&app=mobileapp
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    ${empty}
+
+widgetid错误
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    Set Variable    /mobileportal/getHdStatInfo.action?icode=FDZC0wD5FKc&widgetId=3&app=mobileapp
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    ""
+
+widgetid缺失
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    Set Variable    /mobileportal/getHdStatInfo.action?icode=FDZC0wD5FKc&widgetId=&app=mobileapp
+    ${c}    get    sol    ${url}
+    Should Be Equal As Integers    ${c.status_code}    400

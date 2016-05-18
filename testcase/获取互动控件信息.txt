@@ -1,0 +1,29 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+获取注释
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    获取互动控件信息url    HKJQJsSpxCk
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    [{"startTime":100000,"endTime":400000}]
+
+获取投票
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    获取互动控件信息url    kq8VWMTzwHE
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    为回归的张力尹欧尼加油吧~
+
+icode错误
+    create session    sol    ${www}    timeout=${15.00}
+    ${url}    获取互动控件信息url    kq8VWMTzw
+    ${c}    get    sol    ${url}
+    Should Contain    ${c.content}    icode error kq8VWMTzw

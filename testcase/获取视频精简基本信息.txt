@@ -1,0 +1,41 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+通过icode获取单条视频精简信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemMiniInfos.action?icodes=ssWm3JmlndA&w=tudou
+    should contain    ${c.content}    古剑奇谭 52
+
+通过icode获取多条视频精简信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemMiniInfos.action?icodes=ssWm3JmlndA,0CdrN9GO9Ik&w=tudou
+    should contain    ${c.content}    琅琊榜 07
+
+通过iid获取单条视频精简信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemMiniInfos.action?iids=130816825&w=tudou
+    should contain    ${c.content}    第二十二条婚规 01
+
+通过iid获取多条视频精简信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemMiniInfos.action?iids=130816825,132340089&w=tudou
+    should contain    ${c.content}    何以笙箫默 01
+
+需要返回看点
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemMiniInfos.action?iids=130816825,132340089&w=tudou&needDetail=true
+    should contain    ${c.content}    赵默笙在出国七年后重归故土，她成为了瑰宝杂志社的一名摄影师。何以琛作为律师行事十分果敢，对手许影屡次挑衅都被他犀利压制。以玫开车时不小心撞伤路远风，不曾想远风竟是以玫的超级粉丝。以琛与以玫在超市时偶遇默笙，以琛与默笙四目相对却最终漠然离开。默笙与远风成为同事，他们拍摄的对象是默笙的老同学萧筱。萧筱对默笙心存怨恨，她刻意不配合拍摄挑起与瑰宝杂志社的矛盾。
+
+iid和icode都不传入
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemMiniInfos.action
+    should contain    ${c.content}    iids、icodes need one

@@ -1,0 +1,53 @@
+*** Settings ***
+Library           Selenium2Library
+Library           String
+Library           DatabaseLibrary
+Library           RequestsLibrary
+Library           PublicKeywords.py
+Library           ../../../Workspace/sublimeworkspace/suiji.py
+
+*** Variables ***
+
+*** Keywords ***
+连接mysql数据库
+    [Arguments]    ${host}    ${pwd}    ${dbname}
+    Connect To Database Using Custom Params    pymysql    host='${host}', port=3306, user='root', passwd='${pwd}', db='${dbname}',charset='utf8'
+
+数据库查询tang
+    [Arguments]    ${sqlcode}
+    ${return}    query    ${sqlcode}
+    [Return]    ${return}
+
+创建会话
+    [Arguments]    ${alias}    ${server}
+    Create Session    ${alias}    ${server}
+
+根据剧集信息获取剧集视频URL
+    [Arguments]    ${nick}
+    ${init}    Set Variable    /mobileportal/getAlbumItems.action?aid=${nick}&w=tudou
+    [Return]    ${init}
+
+获取剧集视频节目名称、集数、十字箴言URL
+    [Arguments]    ${arg}
+    ${url}    Set Variable    /mobileportal/getItemBriefByItemCodes.action?iCode=${arg}&app=test
+    [Return]    ${url}
+
+获取互动控件信息url
+    [Arguments]    ${code}
+    ${init}    Set Variable    /mobileportal/getHdWidget.action?icode=${code}
+    [Return]    ${init}
+
+返回getItemBaseInfo精简数据url
+    [Arguments]    ${icode}
+    ${init}    Set Variable    /mobileportal/getItemMiniInfos.action?icodes=${icode}&w=tudou
+    [Return]    ${init}
+
+获取视频商品列表url
+    [Arguments]    ${icode}
+    ${init}    Set Variable    /mobileportal/getGoodsWidget.action?icode=${icode}
+    [Return]    ${init}
+
+获取剧集视频url
+    [Arguments]    ${aid}
+    ${init}    Set Variable    /mobileportal/getAlbumItems.action?aid=${aid}&w=tudou
+    [Return]    ${init}

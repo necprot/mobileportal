@@ -1,0 +1,31 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+获取豆单视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getMultiItemInfos.action?code=9sSdyXmCXQM&type=0
+    should contain    ${c.content}    397318976
+
+获取剧集视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getMultiItemInfos.action?code=vD06rBt70gw&type=1
+    should contain    ${c.content}    千金女贼 DVD版
+
+获取视频视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getMultiItemInfos.action?code=63PK9DYsYaA&type=2
+    should contain    ${c.content}    【近拍】少时演唱会《Catch Me If You Can》暴风舞台 151122
+
+Type参数未传入
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getMultiItemInfos.action?code=63PK9DYsYaA
+    should contain    ${c.content}    NullPointerException

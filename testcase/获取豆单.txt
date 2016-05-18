@@ -1,0 +1,41 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+根据单个豆单code获取豆单
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getPlaylists.action?plcodes=YiABuHVV8II&w=tudou
+    Should Contain    ${c.text}    siwenpizi
+
+根据多个豆单code获取豆单
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getPlaylists.action?plcodes=YiABuHVV8II,zrrc3vOu3mQ&w=tudou
+    Should Contain    ${c.text}    siwenpizi
+
+输入豆单code不存在
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getPlaylists.action?plcodes=22&w=tudou
+    Should Contain    ${c.text}    []
+
+豆单code和id都未传入
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getPlaylists.action?w=tudou
+    Should Contain    ${c.text}    lids、lcodes need one
+
+根据单个豆单id获取豆单
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getPlaylists.action?plids=17007333&w=tudou
+    Should Contain    ${c.text}    siwenpizi
+
+根据多个豆单id获取豆单
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getPlaylists.action?plids=17007333,17786001&w=tudou
+    Should Contain    ${c.text}    siwenpizi

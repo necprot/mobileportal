@@ -1,0 +1,31 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+获取单个视频简介
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBriefByItemCodes.action?iCode=morTToQcY7M&app=tudou
+    should contain    ${c.content}    误解深深苦难言
+
+获取多个视频简介
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBriefByItemCodes.action?iCode=morTToQcY7M,bqP2Cn8KUn4&app=tudou
+    should contain    ${c.content}    阴差阳错的缘分
+
+icode不存在
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBriefByItemCodes.action?iCode=morTToQcY&app=tudou
+    should contain    ${c.content}    [null]
+
+未传入icode
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBriefByItemCodes.action
+    Should Be Equal As Integers    ${c.status_code}    400

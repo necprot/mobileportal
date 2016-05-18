@@ -1,0 +1,43 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+获取一集的视频节目名称、集数、十字箴言
+    Create Session    sol    ${www}    timeout=${15.00}
+    ${url}    获取剧集视频节目名称、集数、十字箴言URL    KgB6Ol9BDuM
+    ${c}    get    sol    ${url}
+    log    ${c.text}
+    should contain    ${c.text}    130169900
+
+获取多集
+    Create Session    sol    ${www}    timeout=${15.00}
+    ${url}    Set Variable    /mobileportal/getItemBriefByItemCodes.action?iCode=KgB6Ol9BDuM,GpY9Yowk2F0,YcTdcITYL6A&app=test
+    ${c}    get    sol    ${url}
+    should contain    ${c.text}    130169899
+
+icode为空
+    Create Session    sol    ${www}    timeout=${15.00}
+    ${url}    获取剧集视频节目名称、集数、十字箴言URL    ${empty}
+    ${c}    get    sol    ${url}
+    log    ${c.text}
+    should contain    ${c.text}    []
+
+icode错误
+    Create Session    sol    ${www}    timeout=${15.00}
+    ${url}    获取剧集视频节目名称、集数、十字箴言URL    YcTdcITssssssYL6A
+    ${c}    get    sol    ${url}
+    log    ${c.text}
+    should contain    ${c.text}    [null]
+
+缺少app参数
+    Create Session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBriefByItemCodes.action?iCode=GpY9Yowk2F0
+    Should Be Equal As Integers    ${c.status_code}    400

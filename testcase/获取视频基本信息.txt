@@ -1,0 +1,41 @@
+*** Settings ***
+Test Timeout      30 seconds
+Library           Selenium2Library
+Library           RequestsLibrary
+Library           DatabaseLibrary
+Library           String
+Library           PublicKeywords.py
+Resource          ../resource/basemp.txt
+Library           Collections
+Resource          ../resource/constantmp.txt
+
+*** Test Cases ***
+通过icode获取多条视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBaseInfos.action?icodes=NzyeKVgeA9E,ssWm3JmlndA&w=tudou
+    should contain    ${c.content}    古剑奇谭 52
+
+通过iid获取单个视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBaseInfos.action?iids=130816825&w=tudou
+    should contain    ${c.content}    第二十二条婚规 01
+
+通过iid获取多个视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBaseInfos.action?iids=130816825,132543998&w=tudou
+    should contain    ${c.content}    琅琊榜 07
+
+需要返回看点
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBaseInfos.action?iids=130816825,132543998&w=tudou&needDetail=true
+    should contain    ${c.content}    {"content":"女友含泪言分手 吊丝张铎惨遭弃","time":766.069}
+
+iid和icode都不传入
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBaseInfos.action?w=tudou&needDetail=true
+    should contain    ${c.content}    iids、icodes need one
+
+通过icode获取单个视频信息
+    create session    sol    ${www}    timeout=${15.00}
+    ${c}    get    sol    /mobileportal/getItemBaseInfos.action?icodes=NzyeKVgeA9E&w=tudou
+    should contain    ${c.content}    山海经之赤影传说 44
