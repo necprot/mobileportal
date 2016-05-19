@@ -4,7 +4,6 @@ Library           String
 Library           DatabaseLibrary
 Library           RequestsLibrary
 Library           PublicKeywords.py
-Library           ../../../Workspace/sublimeworkspace/suiji.py
 
 *** Variables ***
 
