@@ -18,7 +18,7 @@ Resource          ../resource/constantmp.txt
 获取豆单视频（默认10条）
     create session    sol    ${www}    timeout=${15.00}
     ${c}    get    sol    /mobileportal/getTopItemInfosByPlaylistId.action?plcode=YiABuHVV8II&w=tudou
-    Should Contain    ${c.text}    天津妞：史上最抢镜男二号《叶问3》
+    Should Contain    ${c.text}    天津妞：吃货们的爱恨情仇
 
 获取豆单后5条视频
     create session    sol    ${www}    timeout=${15.00}

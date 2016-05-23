@@ -13,7 +13,7 @@ Resource          ../resource/constantmp.txt
 根据aid返回播放记录
     create session    sol    ${www}    timeout=${15.00}
     ${c}    get    sol    /mobileportal/getHistoryPlayList.action?userId=53427696&aid=238395
-    should contain    ${c.content}    zKNfPorXDM8
+    should contain    ${c.content}    0
 
 aid和icode都未传入
     create session    sol    ${www}    timeout=${15.00}
